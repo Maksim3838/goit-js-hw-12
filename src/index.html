@@ -10,14 +10,17 @@
   <body>
     <load src="./partials/header.html" icon-path="img/sprite.svg#logo" />
 
-    <main>
-      <!-- Loads the specified .html file -->
-      <load src="./partials/vite-promo.html" />
-      <load src="./partials/badges.html" />
-    </main>
-
-    <load src="./partials/footer.html" />
-
+    <main class="container">
+    <form class="search-form">
+      <input class="search-input" name="query" type="text" placeholder="Пошук зображень..." />
+      <button type="submit">Search</button>
+    </form>
+    <ul class="gallery"></ul>
+      <div class="controls">
+      <button class="load-more">Load more</button>
+      <div class="loader" aria-hidden="true">Loading...</div>
+    </div>
+  </main>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
