@@ -18,7 +18,7 @@ const input = document.querySelector('.search-input');
 
 let currentQuery = '';
 let page = 1;
-const PER_PAGE = 15; 
+const PER_PAGE = 15;
 
 form.addEventListener('submit', onSearch);
 
@@ -31,7 +31,7 @@ async function onSearch(evt) {
     return;
   }
 
-   currentQuery = query;
+  currentQuery = query;
   page = 1;
   clearGallery();
   hideLoadMoreButton();
@@ -42,22 +42,36 @@ async function onSearch(evt) {
     const { hits = [], totalHits = 0 } = data;
 
     if (!hits.length) {
-      iziToast.error({ title: 'Нічого не знайдено', message: `За запитом "${currentQuery}" результатів немає` });
+      iziToast.error({
+        title: 'Нічого не знайдено',
+        message: `За запитом "${currentQuery}" результатів немає`,
+      });
       hideLoader();
       return;
     }
 
     createGallery(hits);
-    iziToast.success({ title: 'Знайдено', message: `Знайдено ${totalHits} зображень` });
+    iziToast.success({
+      title: 'Знайдено',
+      message: `Знайдено ${totalHits} зображень`,
+    });
 
-        if (totalHits > page * PER_PAGE) {
+    if (totalHits > page * PER_PAGE) {
       showLoadMoreButton();
     } else {
       hideLoadMoreButton();
+      iziToast.info({
+        title: 'Кінець колекції',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
     }
+
   } catch (err) {
     console.error(err);
-    iziToast.error({ title: 'Помилка', message: err.message || 'Щось пішло не так' });
+    iziToast.error({
+      title: 'Помилка',
+      message: err.message || 'Щось пішло не так',
+    });
   } finally {
     hideLoader();
   }
@@ -68,7 +82,7 @@ if (loadMoreElement) {
 }
 
 async function onLoadMore() {
-    loadMoreElement.disabled = true;
+  loadMoreElement.disabled = true;
   page += 1;
 
   try {
@@ -77,28 +91,37 @@ async function onLoadMore() {
     const { hits = [], totalHits = 0 } = data;
 
     if (!hits.length) {
-            iziToast.info({ title: 'Кінець', message: 'Більше зображень немає' });
+      iziToast.info({
+        title: 'Кінець колекції',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
       hideLoadMoreButton();
       return;
     }
 
-       const prevLastCard = galleryEl.lastElementChild;
+    const prevLastCard = galleryEl.lastElementChild;
     createGallery(hits);
 
-       if (totalHits > page * PER_PAGE) {
+    if (totalHits > page * PER_PAGE) {
       showLoadMoreButton();
     } else {
       hideLoadMoreButton();
-      iziToast.info({ title: 'Готово', message: 'Відображені всі результати' });
+      iziToast.info({
+        title: 'Кінець колекції',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
     }
-
-       if (prevLastCard) {
+    
+    if (prevLastCard) {
       const { height: cardHeight } = prevLastCard.getBoundingClientRect();
-            window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
+      window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
     }
   } catch (err) {
     console.error(err);
-    iziToast.error({ title: 'Помилка', message: err.message || 'Не вдалося завантажити дані' });
+    iziToast.error({
+      title: 'Помилка',
+      message: err.message || 'Не вдалося завантажити дані',
+    });
   } finally {
     hideLoader();
     loadMoreElement.disabled = false;
