@@ -16,3 +16,15 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+
+
+
+.load-more { display: none; }
+.load-more.is-visible { display: inline-block; }
+
+.loader { display: none; margin-top: 8px; }
+.loader.is-visible { display: block; }
+
+.gallery { list-style: none; display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; padding: 0; }
+.gallery__item { border-radius: 8px; overflow: hidden; }
+.gallery__image { width: 100%; height: 100%; object-fit: cover; display: block; }
