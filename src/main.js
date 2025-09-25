@@ -51,7 +51,6 @@ async function onSearch(evt) {
       });
       return;
     }
-
     createGallery(hits);
     iziToast.success({
       title: 'Знайдено',
