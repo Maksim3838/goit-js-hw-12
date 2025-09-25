@@ -21,6 +21,9 @@ let page = 1;
 const PER_PAGE = 15;
 
 form.addEventListener('submit', onSearch);
+if (loadMoreElement) {
+  loadMoreElement.addEventListener('click', onLoadMore);
+}
 
 async function onSearch(evt) {
   evt.preventDefault();
@@ -46,7 +49,6 @@ async function onSearch(evt) {
         title: 'Нічого не знайдено',
         message: `За запитом "${currentQuery}" результатів немає`,
       });
-      hideLoader();
       return;
     }
 
@@ -65,7 +67,6 @@ async function onSearch(evt) {
         message: "We're sorry, but you've reached the end of search results.",
       });
     }
-
   } catch (err) {
     console.error(err);
     iziToast.error({
@@ -75,10 +76,6 @@ async function onSearch(evt) {
   } finally {
     hideLoader();
   }
-}
-
-if (loadMoreElement) {
-  loadMoreElement.addEventListener('click', onLoadMore);
 }
 
 async function onLoadMore() {
@@ -102,6 +99,11 @@ async function onLoadMore() {
     const prevLastCard = galleryEl.lastElementChild;
     createGallery(hits);
 
+    if (prevLastCard) {
+      const { height: cardHeight } = prevLastCard.getBoundingClientRect();
+      window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
+    }
+
     if (totalHits > page * PER_PAGE) {
       showLoadMoreButton();
     } else {
@@ -111,11 +113,7 @@ async function onLoadMore() {
         message: "We're sorry, but you've reached the end of search results.",
       });
     }
-    
-    if (prevLastCard) {
-      const { height: cardHeight } = prevLastCard.getBoundingClientRect();
-      window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
-    }
+
   } catch (err) {
     console.error(err);
     iziToast.error({
