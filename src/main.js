@@ -1,4 +1,4 @@
-import { getImagesByQuery } from './pixabay-api.js';
+import { getImagesByQuery } from './js/pixabay-api.js';
 import {
   createGallery,
   clearGallery,
@@ -6,7 +6,7 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
-} from './render-functions.js';
+} from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -14,9 +14,9 @@ const form = document.querySelector('.form');
 const input = document.querySelector('.search-input');
 const loadMoreBtn = document.querySelector('.load-more');
 
-let currentPage = 1;
 let currentQuery = '';
-let totalLoaded = 0;
+let currentPage = 1;
+const perPage = 15;
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -29,9 +29,10 @@ form.addEventListener('submit', async e => {
     return;
   }
 
-  currentPage = 1;
+  currentPage = 1; 
+
   showLoader();
-  const images = await getImagesByQuery(currentQuery, currentPage);
+  const images = await getImagesByQuery(currentQuery, currentPage, perPage);
   hideLoader();
 
   if (images.length === 0) {
@@ -40,15 +41,13 @@ form.addEventListener('submit', async e => {
   }
 
   createGallery(images);
-  totalLoaded = images.length;
-
-  if (images.length === 12) showLoadMoreButton();
+  if (images.length === perPage) showLoadMoreButton();
 });
 
 loadMoreBtn.addEventListener('click', async () => {
   currentPage += 1;
   showLoader();
-  const images = await getImagesByQuery(currentQuery, currentPage);
+  const images = await getImagesByQuery(currentQuery, currentPage, perPage);
   hideLoader();
 
   if (images.length === 0) {
@@ -58,15 +57,12 @@ loadMoreBtn.addEventListener('click', async () => {
   }
 
   createGallery(images);
-  totalLoaded += images.length;
 
-    const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
+    const { height: cardHeight } = document.querySelector('.gallery').firstElementChild.getBoundingClientRect();
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
   });
 
-  if (images.length < 12) hideLoadMoreButton();
+  if (images.length < perPage) hideLoadMoreButton();
 });
