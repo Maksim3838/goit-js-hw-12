@@ -11,16 +11,24 @@
     <link rel="stylesheet" crossorigin href="/goit-js-hw-12/assets/index-Dfv2YW0A.css">
   </head>
   <body>
-      <main class="container">
-    <form class="search-form">
-      <input class="search-input" name="query" type="text" placeholder="Пошук зображень..." />
-      <button type="submit">Search</button>
-    </form>
-    <ul class="gallery"></ul>
+    <main class="container">
+      <form class="form">
+        <input
+          class="search-input"
+          name="query"
+          type="text"
+          placeholder="Пошук зображень..."
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      <ul class="gallery"></ul>
+
       <div class="controls">
-      <button class="load-more">Load more</button>
-      
-    </div>
-  </main>
+        <button class="load-more">Load more</button>
+        <span class="loader" aria-hidden="true">Loading...</span>
+      </div>
+    </main>
+
   </body>
 </html>
