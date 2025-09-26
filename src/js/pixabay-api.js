@@ -1,19 +1,24 @@
-const API_KEY = '52395439-1c1f05bbfb1dbdeee6be85271'; 
-const BASE_URL = 'https://pixabay.com/api/';
-const PER_PAGE = 15; 
+import axios from "axios";
 
-export async function getImagesByQuery(query, page = 1) {
-  if (!query || typeof query !== 'string') {
-    throw new Error('Query must be a non-empty string');
-  }
-  const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(
-    query
-  )}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${PER_PAGE}`;
+const BASE_URL = "https://pixabay.com/api/";
+const API_KEY = "52395439-1c1f05bbfb1dbdeee6be85271"; 
 
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Pixabay API error: ${response.status}`);
+export async function getImages(query, page = 1, per_page = 15) {
+  const params = {
+    key: API_KEY,
+    q: query,
+    image_type: "photo",
+    orientation: "horizontal",
+    safesearch: true,
+    page,
+    per_page,
+  };
+
+  try {
+    const response = await axios.get(BASE_URL, { params });
+    return response.data; 
+  } catch (error) {
+    console.error("Помилка при отриманні зображень:", error);
+    throw error;
   }
-  const data = await response.json();
-    return data;
 }
