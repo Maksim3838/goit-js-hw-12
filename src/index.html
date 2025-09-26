@@ -8,17 +8,25 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-      <main class="container">
-    <form class="search-form">
-      <input class="search-input" name="query" type="text" placeholder="Пошук зображень..." />
-      <button type="submit">Search</button>
-    </form>
-    <ul class="gallery"></ul>
+    <main class="container">
+      <form class="form">
+        <input
+          class="search-input"
+          name="query"
+          type="text"
+          placeholder="Пошук зображень..."
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      <ul class="gallery"></ul>
+
       <div class="controls">
-      <button class="load-more">Load more</button>
-      
-    </div>
-  </main>
+        <button class="load-more">Load more</button>
+        <span class="loader" aria-hidden="true">Loading...</span>
+      </div>
+    </main>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>
