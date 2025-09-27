@@ -11,15 +11,16 @@ const lightbox = new SimpleLightbox('.gallery a', {
 });
 
 export function createGallery(images = []) {
+  if (!galleryContainer) return;
+
   const markup = images
     .map(
-      image => `
-    <li class="gallery-item">
-      <a href="${image.largeImageURL}">
-        <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
-      </a>
-    </li>
-  `
+      img => `
+<li class="gallery__item">
+  <a class="gallery__link" href="${img.largeImageURL}">
+    <img class="gallery__image" src="${img.webformatURL}" alt="${img.tags}" loading="lazy" />
+  </a>
+</li>`
     )
     .join('');
 
@@ -28,21 +29,29 @@ export function createGallery(images = []) {
 }
 
 export function clearGallery() {
+  if (!galleryContainer) return;
   galleryContainer.innerHTML = '';
+  lightbox.refresh();
 }
 
 export function showLoader() {
-  loader.classList.add('active');
+  if (!loader) return;
+  loader.classList.add('is-visible');
 }
 
 export function hideLoader() {
-  loader.classList.remove('active');
+  if (!loader) return;
+  loader.classList.remove('is-visible');
 }
 
 export function showLoadMoreButton() {
-  loadMoreBtn.classList.add('active');
+  if (!loadMoreBtn) return;
+  loadMoreBtn.classList.add('is-visible');
 }
 
 export function hideLoadMoreButton() {
-  loadMoreBtn.classList.remove('active');
+  if (!loadMoreBtn) return;
+  loadMoreBtn.classList.remove('is-visible');
 }
+
+export { galleryContainer as galleryEl, loadMoreBtn as loadMoreElement, loader as loaderElement };
