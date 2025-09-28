@@ -1,57 +1,46 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const galleryContainer = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
-const loader = document.querySelector('.loader');
+export const galleryEl = document.querySelector('.gallery');
+export const loaderEl = document.querySelector('.loader');
+export const loadMoreBtn = document.querySelector('.load-more');
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-export function createGallery(images = []) {
-  if (!galleryContainer) return;
-
+export function createGallery(images) {
   const markup = images
     .map(
       img => `
-<li class="gallery__item">
-  <a class="gallery__link" href="${img.largeImageURL}">
-    <img class="gallery__image" src="${img.webformatURL}" alt="${img.tags}" loading="lazy" />
-  </a>
-</li>`
+        <a href="${img.largeImageURL}" class="gallery-item">
+          <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" />
+        </a>
+      `
     )
     .join('');
 
-  galleryContainer.insertAdjacentHTML('beforeend', markup);
+  galleryEl.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
 }
 
 export function clearGallery() {
-  if (!galleryContainer) return;
-  galleryContainer.innerHTML = '';
-  lightbox.refresh();
+  galleryEl.innerHTML = '';
 }
 
 export function showLoader() {
-  if (!loader) return;
-  loader.classList.add('is-visible');
+  loaderEl.classList.remove('hidden');
 }
 
 export function hideLoader() {
-  if (!loader) return;
-  loader.classList.remove('is-visible');
+  loaderEl.classList.add('hidden');
 }
 
 export function showLoadMoreButton() {
-  if (!loadMoreBtn) return;
-  loadMoreBtn.classList.add('is-visible');
+  loadMoreBtn.classList.remove('hidden');
 }
 
 export function hideLoadMoreButton() {
-  if (!loadMoreBtn) return;
-  loadMoreBtn.classList.remove('is-visible');
+  loadMoreBtn.classList.add('hidden');
 }
-
-export { galleryContainer as galleryEl, loadMoreBtn as loadMoreElement, loader as loaderElement };
