@@ -2,45 +2,72 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const galleryEl = document.querySelector('.gallery');
-export const loadMoreBtn = document.querySelector('.load-more');
-export const loaderEl = document.querySelector('.loader');
+export const loadMoreElement = document.querySelector('.load-more');
+export const loaderElement = document.querySelector('.loader');
 
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
+let lightbox = null;
 
 export function createGallery(images) {
   const markup = images
     .map(
-      ({ largeImageURL, webformatURL, tags }) => `
-        <a href="${largeImageURL}" class="gallery-item">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
-        </a>
-      `
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => {
+        return `
+        <li class="gallery-item">
+          <a href="${largeImageURL}">
+            <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+          </a>
+          <div class="info">
+            <p><b>Likes:</b> ${likes}</p>
+            <p><b>Views:</b> ${views}</p>
+            <p><b>Comments:</b> ${comments}</p>
+            <p><b>Downloads:</b> ${downloads}</p>
+          </div>
+        </li>
+      `;
+      }
     )
     .join('');
 
   galleryEl.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
+
+  initLightbox();
 }
 
 export function clearGallery() {
   galleryEl.innerHTML = '';
 }
+ 
+function initLightbox() {
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  } else {
+    lightbox.refresh();
+  }
+}
 
 export function showLoader() {
-  loaderEl.classList.remove('hidden');
+  loaderElement.style.display = 'inline-block';
 }
 
 export function hideLoader() {
-  loaderEl.classList.add('hidden');
+  loaderElement.style.display = 'none';
 }
 
 export function showLoadMoreButton() {
-  loadMoreBtn.classList.remove('hidden');
+  loadMoreElement.style.display = 'inline-block';
 }
 
 export function hideLoadMoreButton() {
-  loadMoreBtn.classList.add('hidden');
+  loadMoreElement.style.display = 'none';
 }
