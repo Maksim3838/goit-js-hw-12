@@ -11,8 +11,8 @@ import {
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-const form = document.querySelector('form');
-const input = document.querySelector('input[name="search"]');
+const form = document.querySelector('.form');
+const input = document.querySelector('.search-input');
 
 let query = '';
 let page = 1;
@@ -25,11 +25,11 @@ async function onSearch(event) {
   query = input.value.trim();
 
   if (!query) {
-    iziToast.error({ message: 'Введіть запит для пошуку!' });
+    iziToast.error({ message: 'Введіть пошуковий запит!' });
     return;
   }
 
-  page = 1;
+  page = 1; 
   clearGallery();
   hideLoadMoreButton();
 
@@ -38,7 +38,7 @@ async function onSearch(event) {
     const data = await getImagesByQuery(query, page);
 
     if (data.hits.length === 0) {
-      iziToast.warning({ message: 'Нічого не знайдено за цим запитом.' });
+      iziToast.warning({ message: 'Зображення не знайдені!' });
       return;
     }
 
@@ -48,7 +48,7 @@ async function onSearch(event) {
       showLoadMoreButton();
     }
   } catch {
-    iziToast.error({ message: 'Помилка при отриманні даних!' });
+    iziToast.error({ message: 'Сталася помилка при завантаженні.' });
   } finally {
     hideLoader();
   }
@@ -63,7 +63,7 @@ async function onLoadMore() {
 
     if (data.hits.length === 0) {
       hideLoadMoreButton();
-      iziToast.info({ message: 'Більше зображень немає.' });
+      iziToast.info({ message: 'Більше результатів немає.' });
       return;
     }
 
@@ -71,10 +71,10 @@ async function onLoadMore() {
 
     if (data.totalHits <= page * 15) {
       hideLoadMoreButton();
-      iziToast.info({ message: 'Ви досягли кінця результатів пошуку.' });
+      iziToast.info({ message: 'Ви переглянули всі результати.' });
     }
 
-    const { height: cardHeight } =
+       const { height: cardHeight } =
       document.querySelector('.gallery').firstElementChild.getBoundingClientRect();
 
     window.scrollBy({
@@ -82,7 +82,7 @@ async function onLoadMore() {
       behavior: 'smooth',
     });
   } catch {
-    iziToast.error({ message: 'Не вдалося завантажити більше зображень.' });
+    iziToast.error({ message: 'Не вдалося завантажити більше.' });
   } finally {
     hideLoader();
   }
